@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-exec-wrapper"
+version = "1.0.0"
+license = {file = "LICENSE"}
+authors = [
+    { name="myback", email="54638513+myback@users.noreply.github.com" },
+]
+description = "Binary file wrapper"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/myback/py-exec-wrapper"
+"Bug Tracker" = "https://github.com/myback/py-exec-wrapper/issues"
+
+[tool.setuptools.packages.find]
+where=["src"]
