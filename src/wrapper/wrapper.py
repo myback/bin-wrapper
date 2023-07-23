@@ -69,8 +69,7 @@ class ExecWrapper:
         if 'stderr' not in proc_kwargs:
             proc_kwargs['stderr'] = subprocess.PIPE
 
-        print(cmd)
-        # return subprocess_run(*cmd, **proc_kwargs)
+        return subprocess_run(*cmd, **proc_kwargs)
 
     def _pre(self, args, kwargs):
         pass
