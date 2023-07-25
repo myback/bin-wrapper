@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "py-exec-wrapper"
-version = "1.0.1"
+name = "bin-wrapper"
+version = "1.0.0"
 license = {file = "LICENSE"}
 authors = [
     { name="myback", email="54638513+myback@users.noreply.github.com" },
@@ -19,8 +19,8 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/myback/py-exec-wrapper"
-"Bug Tracker" = "https://github.com/myback/py-exec-wrapper/issues"
+"Homepage" = "https://github.com/myback/bin-wrapper"
+"Bug Tracker" = "https://github.com/myback/bin-wrapper/issues"
 
 [tool.setuptools.packages.find]
 where=["src"]
