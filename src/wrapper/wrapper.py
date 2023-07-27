@@ -41,10 +41,12 @@ class ExecWrapper:
         return ExecWrapper(self._bin, *attrs, **self._parent_kwargs)
 
     def __call__(self, *args, **kwargs) -> CompletedProcess:
-        self._pre(args, kwargs)
-
         proc_kwargs = {}
         rewrite_parent_kwargs = self._parent_kwargs.copy()
+        suppress_bool = rewrite_parent_kwargs.pop('suppress_bool', False)
+
+        self._pre(args, rewrite_parent_kwargs, kwargs)
+
         key_pfx = 'subprocess_'
         for k in list(kwargs.keys()):
             if k.startswith(key_pfx):
@@ -55,10 +57,10 @@ class ExecWrapper:
                 rewrite_parent_kwargs[k] = kwargs.pop(k)
 
         cmd = [str(self._bin)]
-        cmd.extend(self.args_from_dict(rewrite_parent_kwargs))
         cmd.extend(self._parent_attrs)
+        cmd.extend(self.args_from_dict(rewrite_parent_kwargs, suppress_bool))
         cmd.extend(args)
-        cmd.extend(self.args_from_dict(kwargs))
+        cmd.extend(self.args_from_dict(kwargs, suppress_bool))
 
         proc_kwargs['shell'] = True
         proc_kwargs['text'] = True
@@ -71,24 +73,24 @@ class ExecWrapper:
 
         return subprocess_run(*cmd, **proc_kwargs)
 
-    def _pre(self, args, kwargs):
+    def _pre(self, args, parent_kwargs, kwargs):
         pass
 
-    def args_from_dict(self, data: dict) -> list[str]:
+    def args_from_dict(self, data: dict, suppress_bool: bool) -> list[str]:
         kw_args = []
         for k, v in data.items():
-            if not k:
+            if not k or v is None:
                 continue
 
             key = k.replace('_', '-', -1)
 
             pfx, join = (self._pfx_char_short, None) if len(k) == 1 else (self._pfx_char_long, '=')
             flag = [pfx + key]
-            if v is not None:
-                val = str(v)
-                if isinstance(v, bool):
-                    val = val.lower()
-
+            val = str(v)
+            if isinstance(v, bool):
+                if v and not suppress_bool:
+                    flag.append(val.lower())
+            else:
                 flag.append(val)
 
             if not join:

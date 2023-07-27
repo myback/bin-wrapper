@@ -39,8 +39,13 @@ class Helm(wrapper.ExecWrapper):
 
         return h
 
-    def _pre(self, args, kwargs):
-        ns = kwargs.pop('n', None)
-        if ns:
-            kwargs.setdefault('namespace', ns)
+    def _pre(self, args, parent_kwargs, kwargs):
+        ns_short = parent_kwargs.pop('n', None)
+        parent_kwargs.setdefault('namespace', ns_short)
+
+        out_short = parent_kwargs.pop('o', None)
+        out = parent_kwargs.pop('output', out_short)
+
+        out_short = kwargs.pop('o', out)
+        kwargs.setdefault('output', out_short)
 ```
