@@ -45,7 +45,7 @@ class ExecWrapper:
         rewrite_parent_kwargs = self._parent_kwargs.copy()
         suppress_bool = rewrite_parent_kwargs.pop('suppress_bool', False)
 
-        self._pre(args, rewrite_parent_kwargs, kwargs)
+        args = self._pre(args, rewrite_parent_kwargs, kwargs) or args
 
         key_pfx = 'subprocess_'
         for k in list(kwargs.keys()):
@@ -73,7 +73,7 @@ class ExecWrapper:
 
         return subprocess_run(*cmd, **proc_kwargs)
 
-    def _pre(self, args, parent_kwargs, kwargs):
+    def _pre(self, args, parent_kwargs, kwargs) -> tuple:
         pass
 
     def args_from_dict(self, data: dict, suppress_bool: bool) -> list[str]:
