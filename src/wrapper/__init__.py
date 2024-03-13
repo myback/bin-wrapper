@@ -1,1 +1,1 @@
-from .wrapper import ExecWrapper, CompletedProcess
+from .wrapper import BinWrapper, CompletedProcess
